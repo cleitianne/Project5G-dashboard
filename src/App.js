@@ -30,7 +30,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Topbar setIsSidebar={setIsSidebar} />
+          
           <main className="content" style={{ display: "flex" }}>
             {isSidebar && <Sidebar isSidebar={isSidebar} />}
             <Box flexGrow={1}>

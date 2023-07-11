@@ -49,7 +49,7 @@ const Calendar = () => {
 
   return (
     <Box m="20px">
-      <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      <Header title="Agenda" subtitle="Controle de agendamentos" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
@@ -59,7 +59,7 @@ const Calendar = () => {
           p="15px"
           borderRadius="4px"
         >
-          <Typography variant="h5">Events</Typography>
+          <Typography variant="h5">Eventos</Typography>
           <List>
             {currentEvents.map((event) => (
               <ListItem
@@ -113,12 +113,12 @@ const Calendar = () => {
             initialEvents={[
               {
                 id: "12315",
-                title: "All-day event",
+                title: "Agendamento 1",
                 date: "2022-09-14",
               },
               {
                 id: "5123",
-                title: "Timed event",
+                title: "Agendamento 2",
                 date: "2022-09-28",
               },
             ]}
