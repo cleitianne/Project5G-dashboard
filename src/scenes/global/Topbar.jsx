@@ -22,10 +22,10 @@ const Topbar = () => {
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
       >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Pesquisar" />
+        {/* <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Pesquisar" />
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
-        </IconButton>
+        </IconButton> */}
       </Box>
 
       {/* ICONS */}
