@@ -14,16 +14,24 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import MainChart from "../../components/MainChart";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Icon } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+const customIcon = new Icon({
+  iconUrl: "/icons8-select-24.png",
+  iconSize: [33, 33]
+})
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const position = [-3.746695, -38.578123];
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="ReactBOARD" subtitle="Welcome to this dashboard made with js and react" />
+        <Header title="5G Open Labs" />
 
         <Box>
           <Button
@@ -36,7 +44,7 @@ const Dashboard = () => {
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
+            Download de dados
           </Button>
         </Box>
       </Box>
@@ -57,8 +65,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
+            title="12"
+            subtitle="Email"
             progress="0.75"
             increase="+14%"
             icon={
@@ -76,8 +84,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
+            title="43"
+            subtitle="Monitoramento de vídeo"
             progress="0.50"
             increase="+21%"
             icon={
@@ -95,8 +103,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
+            title="32"
+            subtitle="Usuários"
             progress="0.30"
             increase="+5%"
             icon={
@@ -127,46 +135,21 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 2 */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="230px" m="-20px 0 0 0">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
+       {/* <div style={{height: 100, width: 200}}> */}
+
+        <MapContainer center={position} icon={customIcon} zoom={16} scrollWheelZoom={true} style={{width: "800px", height: "300px"}}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position} icon={customIcon}>
+            
+          </Marker>
+        </MapContainer>
+       {/* </div> */}
+          
+
+        {/* </Box> */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
