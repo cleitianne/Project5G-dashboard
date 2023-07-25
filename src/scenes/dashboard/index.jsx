@@ -15,27 +15,75 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import MainChart from "../../components/MainChart";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Rectangle  } from 'react-leaflet'
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import SearchIcon from "@mui/icons-material/Search";
 import { mockDataInvoices } from "../../data/mockData";
 import { DataGrid } from "@mui/x-data-grid";
 
+import { useState } from "react";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css'
+
 const customIcon = new Icon({
   iconUrl: "/icons8-select-24.png",
   iconSize: [33, 33]
 })
-
-
-
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const position = [-3.746695, -38.578123];
 
+    
+  const [position1, setPosition1] = useState([-3.74047019, -38.53380561]);
+  const [position2, setPosition2] = useState([-3.74047019, -38.53380561]);
+  const [changePosition, setChangePosition] = useState(false);
+  const [coodenations, setCoordenations] = useState(null); 
+
+  const [rectangle, setRetangulo] = useState ([    
+    [-3.72547019, -38.52380561],
+    [-3.74047019, -38.50380561]
+  ]);
+
+  const markerIcon1 = new L.Icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3082/3082383.png",
+      iconSize: [25, 25],
+      iconAnchor: [12, 41],
+      shadowSize: [41, 41],
+      shadowAnchor: [12, 41],
+  });
+
+  const markerIcon2 = new L.Icon({
+      iconUrl: "https://www.freeiconspng.com/uploads/blue-map-localization-icon-9.png",
+      iconSize: [25, 25],
+      iconAnchor: [12, 41],
+      shadowSize: [41, 41],
+      shadowAnchor: [12, 41],
+  });
+
+  const MapClickHandler = () => {
+      useMapEvents({
+          click: (e) => {
+              setCoordenations(e.latlng);
+              setPosition1([e.latlng.lat, e.latlng.lng]);
+              setRetangulo([[ e.latlng.lat < 0? e.latlng.lat+0.015: e.latlng.lat-0.015,  e.latlng.lng < 0? e.latlng.lng + 0.01: e.latlng.lng -0.01 ],
+                [ e.latlng.lat,  e.latlng.lng < 0? e.latlng.lng + 0.02: e.latlng.lng -0.02 ]]);
+              setChangePosition(!changePosition);    
+
+          }
+      });
+      return null;
+  };
   
+
+  const fillBlueOptions = { fillColor: 'blue' }
+  const blackOptions = { color: 'black' }
+  const limeOptions = { color: 'lime' }
+  const purpleOptions = { color: 'purple' }
+  const redOptions = { color: 'red' }
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -140,72 +188,6 @@ const Dashboard = () => {
           />
         </Box>
 
-        {/* ROW 2 */}
-       {/* <div style={{height: 100, width: 200}}> */}
-        
-        {/* <MapContainer center={position} icon={customIcon} zoom={16} scrollWheelZoom={true} style={{width: "800px", height: "300px"}}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={position} icon={customIcon}>
-            
-          </Marker>
-        </MapContainer> */}
-       {/* </div> */}
-          
-
-        {/* </Box> */}
-        {/* <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
-          >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box> */}
 
         {/* ROW 3 */}
         <Box
@@ -217,14 +199,20 @@ const Dashboard = () => {
           p="5px"
         >
           
-            <MapContainer center={position} icon={customIcon} zoom={16} scrollWheelZoom={true} style={{width: "900px", height: "700px"}}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          <MapContainer
+            center={position1}
+            zoom={16}
+            style={{ width: '70%', height: '65%', position: 'absolute' }}
+            >
+              <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={position} icon={customIcon}>
+              attribution="Map data &copy; OpenStreetMap contributors"
+              />
+              <Rectangle bounds={rectangle} pathOptions={blackOptions} />
+              {/* <Marker position={position1} icon={markerIcon1}></Marker>
+              <Marker position={position2} icon={markerIcon2}></Marker> */}
+              <MapClickHandler /> 
               
-            </Marker>
             </MapContainer>
         
           {/* <Box
